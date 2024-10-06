@@ -43,19 +43,19 @@ try {
         # Create the output file name
         $outputFile = Join-Path -Path $outputFolder -ChildPath ($prefix + "_" + $fileSuffix + ".split")
 
-	# Check if the output file already exists
-if (Test-Path -Path $outputFile) {
-    while ($true) {
-        $userChoice = Read-Host "Output file already exists. Do you want to replace it? (y/n)"
-        if ($userChoice -eq 'y') {
-            break
-        } elseif ($userChoice -eq 'n') {
-            throw "Operation cancelled by user."
-        } else {
-            Write-Output "Invalid input. Please enter 'y' to replace or 'n' to cancel."
+	    # Check if the output file already exists
+        if (Test-Path -Path $outputFile) {
+            while ($true) {
+                $userChoice = Read-Host "Output file already exists. Do you want to replace it? (y/n)"
+                if ($userChoice -eq 'y') {
+                    break
+                } elseif ($userChoice -eq 'n') {
+                    throw "Operation cancelled by user."
+                } else {
+                    Write-Output "Invalid input. Please enter 'y' to replace or 'n' to cancel."
+                }
+            }
         }
-    }
-}
         
         # Create a new FileStream for the output file
         $outputStream = [System.IO.File]::OpenWrite($outputFile)
@@ -69,7 +69,6 @@ if (Test-Path -Path $outputFile) {
                 
                 if ($readCount -eq 0) {
                     # End of file reached
-		    Write-OutPut "$outputFile"
                     break
                 }
 
@@ -77,6 +76,7 @@ if (Test-Path -Path $outputFile) {
                 $outputStream.Write($buffer, 0, $readCount)
                 $bytesRead += $readCount
             }
+		    Write-OutPut "$outputFile"
 
             # Check if we wrote any bytes
             if ($bytesRead -eq 0 -or $readCount -eq 0) {
